@@ -1,7 +1,8 @@
-const loadPhones = async (searchText='iphone', isShowAll) => {
+const loadPhones = async (searchText='samsung', isShowAll) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
     const phones = data.data;
+    console.log(phones.length)
     displayPhones(phones, isShowAll);
 }
 const displayPhones = (phones, isShowAll) => {
@@ -58,7 +59,7 @@ const displayPhones = (phones, isShowAll) => {
 const handleSearchPhones = (isShowAll) => {
     loadingSpinner(true);
     const searchField = document.getElementById('search-field');
-    const searchFieldValue = searchField.value;
+    const searchFieldValue = searchField.value || 'samsung';
     loadPhones(searchFieldValue, isShowAll);
 }
 
