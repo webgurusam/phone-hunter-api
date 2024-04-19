@@ -1,15 +1,26 @@
-const loadPhones = async (searchText='iphone') => {
+const loadPhones = async (searchText='iphone', isShowAll) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
     const phones = data.data;
-    displayPhones(phones);
+    displayPhones(phones, isShowAll);
 }
-const displayPhones = (phones) => {
+const displayPhones = (phones, isShowAll) => {
     const phonesContainer = document.getElementById('phones-container');
 
     phonesContainer.textContent = '';
+
+    const showAllPhonesContainer = document.getElementById('show-all-phones-container');
+
+    if(phones.length > 12 && !isShowAll){
+        showAllPhonesContainer.classList.remove('hidden');
+    }
+    else{
+        showAllPhonesContainer.classList.add('hidden');
+    }
     
-    phones = phones.slice(0,12);
+    if(!isShowAll){
+        phones = phones.slice(0,12);
+    }
 
     phones.forEach(phone => {
         const phoneCard = document.createElement('div');
@@ -29,10 +40,14 @@ const displayPhones = (phones) => {
     });
 }
 
-const handleSearchPhones = () => {
+const handleSearchPhones = (isShowAll) => {
     const searchField = document.getElementById('search-field');
     const searchFieldValue = searchField.value;
-    loadPhones(searchFieldValue);
+    loadPhones(searchFieldValue, isShowAll);
+}
+
+const showAllPhones = () => {
+    handleSearchPhones(true);
 }
 
 loadPhones();
