@@ -1,4 +1,4 @@
-const loadPhones = async (searchText, isShowAll) => {
+const loadPhones = async (searchText='iphone', isShowAll) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
     const phones = data.data;
@@ -32,7 +32,7 @@ const displayPhones = (phones, isShowAll) => {
           <p>There are many variations of passages of available, but the majority have suffered</p>
           <h2 class="card-title">$999</h2>
           <div class="card-actions justify-end">
-            <button class="btn btn-info text-white">Show Details</button>
+            <button onclick="loadPhoneDetails('${phone.slug}')" class="btn btn-info text-white">Show Details</button>
           </div>
         </div>
         `;
@@ -60,6 +60,31 @@ const loadingSpinner = (isLoading) => {
     else{
         loadingSpinner.classList.add('hidden');
     }
+}
+
+const loadPhoneDetails = async (id) => {
+    const res = await fetch(`https://openapi.programming-hero.com/api/phone/${id}`);
+    const data = await res.json();
+    const phoneDetails = data.data;
+    showPhoneDetails(phoneDetails);
+}
+
+const showPhoneDetails = (phoneDetails) => {
+    const getTheModalContentContainer = document.getElementById('phone-content-container');
+    getTheModalContentContainer.innerHTML = `
+        <img class='w-1/2 mx-auto py-4' src="${phoneDetails.image}" alt="${phoneDetails.name}" />
+        <h3 class="font-bold text-3xl">${phoneDetails.name}</h3>
+        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. </p>
+        <p><strong>Storage :</strong> ${phoneDetails?.mainFeatures?.storage}</p>
+        <p><strong>Display Size :</strong> ${phoneDetails?.mainFeatures?.displaySize}</p>
+        <p><strong>Chipset :</strong> ${phoneDetails?.mainFeatures?.chipSet}</p>
+        <p><strong>Memory :</strong> ${phoneDetails?.mainFeatures?.memory}</p>
+        <p><strong>Slug :</strong> ${phoneDetails?.slug}</p>
+        <p><strong>Release Data :</strong> ${phoneDetails?.releaseDate}</p>
+        <p><strong>Brand :</strong> ${phoneDetails?.brand}</p>
+        <p><strong>GPS :</strong> ${phoneDetails?.others?.GPS}</p>
+    `;
+    my_modal_1.showModal();
 }
 
 loadPhones();
