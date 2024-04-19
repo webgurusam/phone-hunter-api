@@ -5,6 +5,20 @@ const loadPhones = async (searchText='iphone', isShowAll) => {
     displayPhones(phones, isShowAll);
 }
 const displayPhones = (phones, isShowAll) => {
+    const page404 = document.getElementById('page-404');
+    const fullBg = document.getElementById('full-bg');
+    const headerTitle = document.getElementById('header-title');
+    if(phones < 1){
+        page404.classList.remove('hidden');
+        fullBg.classList.add('dark:bg-gray-900', 'h-screen');
+        headerTitle.classList.add('text-white');
+    }
+    else{
+        page404.classList.add('hidden');
+        fullBg.classList.remove('dark:bg-gray-900', 'h-screen');
+        headerTitle.classList.remove('text-white');
+    }
+
     const phonesContainer = document.getElementById('phones-container');
 
     phonesContainer.textContent = '';
